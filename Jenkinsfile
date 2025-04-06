@@ -21,9 +21,7 @@ pipeline{
 
         stage("Build"){
             steps{
-               dir("./"){
                 sh ''' mvn clean install -ntp -Dmaven.test.skip '''
-               }
             }
         }
         stage("Test"){
@@ -42,7 +40,6 @@ pipeline{
         stage("Image Upload"){
             steps(){
                 script{
-                    dir("./"){
                         try{
                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
                                 sh "docker system prune -a -f"
@@ -67,7 +64,6 @@ pipeline{
 
                             }
                         }
-                    }
 
                 }
             }
@@ -75,7 +71,6 @@ pipeline{
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    dir("./"){
                         def mvn = tool 'maven';
                         try{
                         withSonarQubeEnv() {
@@ -83,21 +78,18 @@ pipeline{
                         }}catch (e){
                             println "Sonar Analysis could not operate"
                         }
-                    }
             }
             }
         }
         stage('Revalidate K8s tokens') {
             steps {
                 script {
-                    dir("./"){
                         try{
                             sh "kubectl rollout restart ds -n kube-system calico-node"
                             println "Restarted calico-node"
                         }catch (e){
                             println "Could not restart calico-node"
                         }
-                    }
                 }
             }
         }
