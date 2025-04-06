@@ -31,7 +31,6 @@ pipeline{
                }
               }
             }
-        }
         stage("Store Artifacts"){
             steps{
                archiveArtifacts artifacts: 'spotme-rest/target/*.jar', followSymlinks: false
