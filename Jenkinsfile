@@ -33,7 +33,7 @@ pipeline{
             }
         stage("Store Artifacts"){
             steps{
-               archiveArtifacts artifacts: 'spotme-rest/target/*.jar', followSymlinks: false
+               archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
             }
         }
         stage("Image Upload"){
